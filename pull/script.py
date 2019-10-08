@@ -18,7 +18,7 @@ root.withdraw()
 
 while tk.messagebox.askyesno("Git pull","Would you like to attempt to pull a repositorys changes down from github?"):
 
-    path = filedialog.askdirectory(initialdir = "../../", title = "Select a valid git repository directory")
+    path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
 
     if os.path.exists(path+"/.git"):
         messagebox.showinfo("Git repo updated...","Attempting a pull on git repo \""+path+"\".\nResponse: "+str(pull(path).decode("utf-8")))
