@@ -10,21 +10,17 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
 
-def status(path):
-    return subprocess.check_output("cd "+str(path)+" && git status", shell=True)
+def status():
+    return subprocess.check_output("git status", shell=True)
 
-def add(path):
-    return subprocess.check_output("cd "+str(path)+" && git add .", shell=True)
+def add():
+    return subprocess.check_output("git add .", shell=True)
 
-def commit(path,changes):
-    pw = os.getcwd()
-    os.chdir(path)
-    res = subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
-    os.chdir(pw)
-    return res
+def commit(changes):
+    return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
 
-def push(path):
-    process=subprocess.Popen(["cd "+str(path)+" && git push"],
+def push():
+    process=subprocess.Popen(["git push"],
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
@@ -36,18 +32,18 @@ def push(path):
     stdoutdata,stderrdata=process.communicate(input=inputdata)
     return (stdoutdata,stderrdata)
 
-def pull(path):
-    return subprocess.check_output("cd "+str(path)+" && git pull", shell=True)
-
 root = tk.Tk()
 root.withdraw()
 
 while tk.messagebox.askyesno("Git push","Would you like to attempt to push a repositorys changes up to github?"):
 
     path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
+    
+    wd = os.getcwd()
+    os.chdir(path)
 
     if os.path.exists(path+"/.git"):
-        stat = status(path).decode("utf-8").split("\n")
+        stat = status().decode("utf-8").split("\n")
         result = []    
         for item in stat:
             if "\t" in item:
@@ -57,11 +53,13 @@ while tk.messagebox.askyesno("Git push","Would you like to attempt to push a rep
                     break
         result = "\n".join(result)
         if tk.messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
-            add(path)
-            commit(path,result)
-            print(push(path))
+            add()
+            commit(result)
+            print(push())
         else:
             print("Git push aborted!")
     else:
         print("Not a git folder")
         messagebox.showwarning("Git repo not found...", "The selected directory does not contain a .git file and has been ignored.")
+
+    os.chdir(wd)
