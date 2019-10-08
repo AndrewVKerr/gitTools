@@ -25,11 +25,11 @@ def push():
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    inputdata=simpledialog.askstring("Username", "Github Username:")
+    inputdata=simpledialog.askstring("Username", "Github Username:").encode("utf-8")
     stdoutdata,stderrdata=process.communicate(input=inputdata)
     if stderrdata != None:
         return (stdoutdata,stderrdata)
-    inputdata=simpledialog.askstring("Password", "Github Password:")
+    inputdata=simpledialog.askstring("Password", "Github Password:").encode("utf-8")
     stdoutdata,stderrdata=process.communicate(input=inputdata)
     return (stdoutdata,stderrdata)
 
