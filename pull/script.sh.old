@@ -1,0 +1,16 @@
+#!/usr/bin/sh
+# Andrew Kerr
+# 10/03/2019
+
+# This program will goto all supported directorys and pull from them.
+
+#if [ -d "$HOME/GIT/" ] ; then
+    
+    #for d in $HOME/GIT/*/ ; do
+        #if [ -d $d/.git ] ; then
+            #echo "[$date]Attempting to pull: $d" >> $HOME/GIT/updater/pull.log
+            #cd $d && git pull >> $HOME/GIT/updater/pull.log
+            #echo "\n" >> $HOME/GIT/updater/pull.log
+        #fi
+    #done
+#fi
