@@ -20,7 +20,7 @@ def commit(changes):
     return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
 
 def push():
-    process=subprocess.Popen(["git push"],
+    process=subprocess.Popen(["git","push"],
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
