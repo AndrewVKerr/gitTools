@@ -28,7 +28,7 @@ def push():
 root = tk.Tk()
 root.withdraw()
 
-while tk.messagebox.askyesno("Git push","Would you like to attempt to push a repositorys changes up to github?"):
+while messagebox.askyesno("Git push","Would you like to attempt to push a repositorys changes up to github?"):
 
     path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
     
@@ -44,8 +44,11 @@ while tk.messagebox.askyesno("Git push","Would you like to attempt to push a rep
             else:
                 if len(result) > 0:
                     break
+        if len(result) <= 0:
+            messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo.")
+            continue
         result = "\n".join(result)
-        if tk.messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
+        if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
             add()
             commit(result)
             print(push())
