@@ -7,6 +7,7 @@
 import os
 import subprocess
 import tkinter as tk
+from tkinter import simpledialog
 from tkinter import filedialog
 from tkinter import messagebox
 
@@ -24,11 +25,11 @@ def push():
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
-    inputdata=tk.simpledialog.askstring("Username", "Github Username:")
+    inputdata=simpledialog.askstring("Username", "Github Username:")
     stdoutdata,stderrdata=process.communicate(input=inputdata)
     if stderrdata != None:
         return (stdoutdata,stderrdata)
-    inputdata=tk.simpledialog.askstring("Password", "Github Password:")
+    inputdata=simpledialog.askstring("Password", "Github Password:")
     stdoutdata,stderrdata=process.communicate(input=inputdata)
     return (stdoutdata,stderrdata)
 
