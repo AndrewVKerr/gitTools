@@ -21,21 +21,9 @@ def commit(changes):
     return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
 
 def push():
-    inputdata=simpledialog.askstring("Additional Parameters", "Additional parameters:")
-    cmd = ["git","push"]
-    for item in inputdata.split(" "):
-        cmd.append(item)
-    process=subprocess.Popen(cmd,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
-    inputdata=simpledialog.askstring("Username", "Github Username:").encode("utf-8")
-    stdoutdata,stderrdata=process.communicate(input=inputdata)
-    if stderrdata != None:
-        return (stdoutdata,stderrdata)
-    inputdata=simpledialog.askstring("Password", "Github Password:").encode("utf-8")
-    stdoutdata,stderrdata=process.communicate(input=inputdata)
-    return (stdoutdata,stderrdata)
+    params = simpledialog.askstring("Additional Parameters", "Additional parameters:")
+    cmd = "git push "+params
+    return subprocess.check_output("mate-terminal "+cmd, shell=True)
 
 root = tk.Tk()
 root.withdraw()
