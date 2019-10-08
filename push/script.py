@@ -23,7 +23,7 @@ def commit(changes):
 def push():
     params = simpledialog.askstring("Additional Parameters", "Additional parameters:")
     cmd = "git push "+params
-    return subprocess.check_output("mate-terminal "+cmd, shell=True)
+    return subprocess.check_output("mate-terminal --command \""+cmd+"\"", shell=True)
 
 root = tk.Tk()
 root.withdraw()
