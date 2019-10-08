@@ -21,7 +21,11 @@ def commit(changes):
     return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
 
 def push():
-    process=subprocess.Popen(["git","push"],
+    inputdata=simpledialog.askstring("Additional Parameters", "Additional parameters:")
+    cmd = ["git","push"]
+    for item in inputdata.split(" "):
+        cmd.append(item)
+    process=subprocess.Popen(cmd,
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
