@@ -2,7 +2,7 @@
 # Andrew Kerr
 # 10/08/2019
 
-''' The purpose of this script is to setup all of the current scripts contained within the '''
+''' The purpose of this script is to either setup or destroy the current application references'''
 
 import os
 import subprocess
@@ -11,8 +11,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 def addApp(home,path_to_file,name,comment):
-    filename = name.replace(" ","_")
-    with open(home+"/.local/share/applications/"+filename+".desktop", "w") as f:
+    app_location = home+"/.local/share/applications/"
+    filename = name.replace(" ","_")+".desktop"
+    with open(app_location+filename, "w") as f:
         f.write("[Desktop Entry]\n")
         f.write("Name="+name+"\n")
         f.write("Type=Application\n")
@@ -21,11 +22,11 @@ def addApp(home,path_to_file,name,comment):
         f.write("Icon="+path_to_file+"/icon.png\n")
         f.write("Comment="+comment+"\n")
         f.write("NoDisplay=false\n")
-        f.write("Categories=Development;Programming\n")
+        f.write("Categories=Git;Development;Programming\n")
         f.write("Name[en]="+name+"\n")
         f.write("Name[en_US]="+name+"\n")
         f.close()
-    os.system("cd "+home+"/.local/share/applications && chmod a+x "+filename+".desktop")
+    os.system("chmod a+x "+app_location+filename)
 
 root = tk.Tk()
 root.withdraw()
@@ -35,7 +36,8 @@ if tk.messagebox.askyesno("Setup Confirmation","Do you wish to install this seri
     #if os.geteuid() != 0: # Not necessary as the .local directory applications does not need to root access to execute.
     #    tk.messagebox.showerror("Root permissions needed!","This installer needs root permissions to append its scripts onto the applications menu. Level: "+str(os.geteuid()))
     #    exit("Root permissions needed!")
-
-    path = filedialog.askdirectory(initialdir = "/home/", title="Please select your home directory") 
-    addApp(path,path+"/GIT/gitTools/pull/","Git Pull","Attempts to update the local repo with the repo on github.")
+    
+    home = filedialog.askdirectory(initialdir = "/home/", title="Please select your home directory") 
+    currdir = os.getcwd()
+    addApp(home,currdir+"/pull/","Git Pull","Attempts to update the local repo with the repo on github.")
     
