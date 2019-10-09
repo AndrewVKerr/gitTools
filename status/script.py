@@ -14,21 +14,10 @@ from tkinter import messagebox
 def status():
     return subprocess.check_output("git status", shell=True)
 
-def add():
-    return subprocess.check_output("git add .", shell=True)
-
-def commit(changes):
-    return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
-
-def push():
-    params = simpledialog.askstring("Additional Parameters", "Additional parameters:")
-    cmd = "git push "+params
-    return subprocess.check_output("mate-terminal --command \""+cmd+"\"", shell=True)
-
 root = tk.Tk()
 root.withdraw()
 
-while messagebox.askyesno("Git Push","Would you like to attempt to push a repositorys changes up to github?"):
+while messagebox.askyesno("Git Status","Would you like to see the status of a repository?"):
 
     path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
     
@@ -45,15 +34,10 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
                 if len(result) > 0:
                     break
         if len(result) <= 0:
-            messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo.")
+            messagebox.showinfo("Git repo is all caught up!","The selected directory \""+path+"\" is currently up to date with the github repo.")
             continue
         result = "\n".join(result)
-        if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
-            add()
-            commit(result)
-            print(push())
-        else:
-            print("Git push aborted!")
+        messagebox.showinfo("Git repo has changes!",result)
     else:
         print("Not a git folder")
         messagebox.showwarning("Git repo not found...", "The selected directory does not contain a .git file and has been ignored.")

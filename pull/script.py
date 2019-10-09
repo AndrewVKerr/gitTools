@@ -16,7 +16,7 @@ def pull(path):
 root = tk.Tk()
 root.withdraw()
 
-while tk.messagebox.askyesno("Git pull","Would you like to attempt to pull a repositorys changes down from github?"):
+while tk.messagebox.askyesno("Git Pull","Would you like to attempt to pull a repositorys changes down from github?"):
 
     path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
 
