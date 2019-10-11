@@ -54,8 +54,9 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
             print(result)
             continue
         if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
-            add()
-            commit(result)
+            if len(result) > 0:
+                add()
+                commit(result)
             print(push())
         else:
             print("Git push aborted!")
