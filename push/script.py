@@ -38,15 +38,19 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
     if os.path.exists(path+"/.git"):
         stat = status().decode("utf-8").split("\n")
         result = []    
+        ready = False
         for item in stat:
             if "\t" in item:
                 result.append(item.replace("\t",""))
             else:
+                if "Your branch is ahead of" in item:
+                    ready = True
                 if len(result) > 0:
                     break
         result = "\n".join(result)
-        if "Changes not staged for commit:" not in result:
+        if not ready:
             messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo. Nothing to push!")
+            print(stat)
             print(result)
             continue
         if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
