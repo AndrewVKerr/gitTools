@@ -17,8 +17,11 @@ def status():
 def add():
     return subprocess.check_output("git add .", shell=True)
 
-def commit(changes):
-    return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
+def commit(message,changes):
+    if len(message) <= 0:
+        return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
+    else:
+        return subprocess.check_output("git commit -m \""+message+"\"", shell=True)
 
 root = tk.Tk()
 root.withdraw()
@@ -47,8 +50,8 @@ while messagebox.askyesno("Git Commit",message):
         result = "\n".join(result)
         if messagebox.askyesno("Git Commit","The following files have been updated, would you like to attempt to commit these changes?\n"+result):
             try:
-                add()
-                commit(result)
+                add()     
+                commit(simpledialog.askstring("Custom Message", "Custom message for commit, leave blank for message to list modified files."),result)
                 messagebox.showinfo("Git Commit","The commit was successfull.")
             except Exception as e:
                 messagebox.showwarning("Git Commit Failed","The commit has failed!\n\t- Thrown Exception: "+str(e))
