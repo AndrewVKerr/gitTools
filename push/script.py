@@ -12,13 +12,26 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 def status():
-    return subprocess.check_output("git status -uno", shell=True)
-
+    stat = subprocess.check_output("git status -uno", shell=True).decode("utf-8").split("\n")
+    result = []    
+    ready = False
+    for item in stat:
+        if "\t" in item:
+            result.append(item.replace("\t",""))
+        else:
+            if "Your branch is ahead of" in item or "Changes not staged for commit" in item:
+                ready = True
+            if len(result) > 0:
+                break
+    return (stat,result,ready)
 def add():
     return subprocess.check_output("git add .", shell=True)
 
-def commit(changes):
-    return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
+def commit(message,changes):
+    if len(message) <= 0:
+        return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
+    else:
+        return subprocess.check_output("git commit -m \""+message+"\"", shell=True)
 
 def push():
     params = simpledialog.askstring("Additional Parameters", "Additional parameters:")
@@ -36,28 +49,20 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
     os.chdir(path)
 
     if os.path.exists(path+"/.git"):
-        stat = status().decode("utf-8").split("\n")
-        result = []    
-        ready = False
-        for item in stat:
-            if "\t" in item:
-                result.append(item.replace("\t",""))
-            else:
-                if "Your branch is ahead of" in item:
-                    ready = True
-                if len(result) > 0:
-                    break
-        result = "\n".join(result)
-        if not ready:
+        stat = status()
+        result = "\n".join(stat[1])
+        if not stat[2]:
             messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo. Nothing to push!")
-            print(stat)
-            print(result)
             continue
         if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
             if len(result) > 0:
                 add()
-                commit(result)
+                commit(simpledialog.askstring("Custom Message", "Custom message for commit, leave blank for message to list modified files."),result)
             print(push())
+            stat = status()
+            if not stat[2]:
+                messagebox.showwarning("Git push failed!", "Push was not successfull for some reason, this could happen if you entered in the wrong account information.")
+                continue
         else:
             print("Git push aborted!")
     else:
