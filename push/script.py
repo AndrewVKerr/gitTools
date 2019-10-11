@@ -61,7 +61,7 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
             print(push())
             messagebox.askokcancel("Awaiting push", "Please input your username and password when prompted by a seperate console.\nDO NOT PRESS\nOk or Cancel until the seperate console has closed!")
             stat = status()
-            if not stat[2]:
+            if stat[2]:
                 messagebox.showwarning("Git push failed!", "Push was not successfull for some reason, this could happen if you entered in the wrong account information.")
                 continue
         else:
