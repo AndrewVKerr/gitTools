@@ -55,4 +55,5 @@ if tk.messagebox.askyesno("Setup Confirmation","Do you wish to install this seri
     addApp(home,currdir+"/pull/","Git Pull","Attempts to update the local repo with the repo on github.")
     addApp(home,currdir+"/push/","Git Push","Attempts to update the github repo with the local repo on this device.")
     addApp(home,currdir+"/status/","Git Status","Retrieves the status of the local repo on this device.")
+    addApp(home,currdir+"/commit/","Git Commit","Commits any current changes from a repository on this device.")
     

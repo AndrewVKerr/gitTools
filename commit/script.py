@@ -12,7 +12,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 def status():
-    return subprocess.check_output("git status -uno", shell=True)
+    return subprocess.check_output("git status", shell=True)
 
 def add():
     return subprocess.check_output("git add .", shell=True)
@@ -20,15 +20,12 @@ def add():
 def commit(changes):
     return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
 
-def push():
-    params = simpledialog.askstring("Additional Parameters", "Additional parameters:")
-    cmd = "git push "+params
-    return subprocess.check_output("mate-terminal --command \""+cmd+"\"", shell=True)
-
 root = tk.Tk()
 root.withdraw()
 
-while messagebox.askyesno("Git Push","Would you like to attempt to push a repositorys changes up to github?"):
+message = "Would you like to attempt to commit a repositorys changes?"
+
+while messagebox.askyesno("Git Commit",message):
 
     path = filedialog.askdirectory(initialdir = "./GIT", title = "Select a valid git repository directory")
     
@@ -44,17 +41,20 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
             else:
                 if len(result) > 0:
                     break
-        result = "\n".join(result)
-        if "Changes not staged for commit:" not in result:
-            messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo. Nothing to push!")
-            print(result)
+        if len(result) <= 0:
+            messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo.")
             continue
-        if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
-            add()
-            commit(result)
-            print(push())
+        result = "\n".join(result)
+        if messagebox.askyesno("Git Commit","The following files have been updated, would you like to attempt to commit these changes?\n"+result):
+            try:
+                add()
+                commit(result)
+                messagebox.showinfo("Git Commit","The commit was successfull.")
+            except Exception as e:
+                messagebox.showwarning("Git Commit Failed","The commit has failed!\n\t- Thrown Exception: "+str(e))
         else:
             print("Git push aborted!")
+        message = "Would you like to attempt to commit another repositorys changes?"
     else:
         print("Not a git folder")
         messagebox.showwarning("Git repo not found...", "The selected directory does not contain a .git file and has been ignored.")
