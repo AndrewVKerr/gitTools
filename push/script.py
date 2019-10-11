@@ -55,15 +55,18 @@ while messagebox.askyesno("Git Push","Would you like to attempt to push a reposi
             messagebox.showinfo("Git repo already up to date!","The selected directory \""+path+"\" is currently up to date with the github repo. Nothing to push!")
             continue
         if messagebox.askyesno("Git push","The following files have been updated, would you like to attempt to push these changes to github?\n"+result):
-            if len(result) > 0:
-                add()
-                commit(simpledialog.askstring("Custom Message", "Custom message for commit, leave blank for message to list modified files."),result)
-            print(push())
-            messagebox.askokcancel("Awaiting push", "Please input your username and password when prompted by a seperate console.\nDO NOT PRESS\nOk or Cancel until the seperate console has closed!")
-            stat = status()
-            if stat[2]:
-                messagebox.showwarning("Git push failed!", "Push was not successfull for some reason, this could happen if you entered in the wrong account information.")
-                continue
+            try:
+                if len(result) > 0:
+                    add()
+                    commit(simpledialog.askstring("Custom Message", "Custom message for commit, leave blank for message to list modified files."),result)
+                print(push())
+                messagebox.askokcancel("Awaiting push", "Please input your username and password when prompted by a seperate console.\nDO NOT PRESS\nOk or Cancel until the seperate console has closed!")
+                stat = status()
+                if stat[2]:
+                    messagebox.showwarning("Git push failed!", "Push was not successfull for some reason, this could happen if you entered in the wrong account information.")
+                    continue
+            except Exception as e:
+                messagebox.showerror("Git push failed!", "Push was not successfull, an exception was raised during the the add or commit or push phase of the program.\nException: "+str(e))
         else:
             print("Git push aborted!")
     else:
