@@ -22,15 +22,16 @@ def create_category(home, currdir):
         f.close()
     os.system("chmod a+x "+menu_location+filename)
 
-def addApp(home,category,path_to_file,name,comment):
+def addApp(home,category,fname,name,comment):
+    filepath = currdir + fname;
     filename = name.replace(" ","_")+".desktop"
     with open(app_location+filename, "w") as f:
         f.write("[Desktop Entry]\n")
         f.write("Name="+name+"\n")
         f.write("Type=Application\n")
-        f.write("Exec="+path_to_file+"script.py\n")
+        f.write("Exec="+filepath+".py\n")
         f.write("Terminal=false\n")
-        f.write("Icon="+path_to_file+"icon.png\n")
+        f.write("Icon="+filepath+".png\n")
         f.write("Comment="+comment+"\n")
         f.write("NoDisplay=false\n")
         f.write("Categories="+category+"\n")
@@ -67,12 +68,12 @@ if tk.messagebox.askyesno("Setup Confirmation","Please press yes if you wish to 
     
     try:
         create_category(home,currdir)
-        currdir = currdir + "/.."
-        addApp(home,"Github",currdir+"/updater/","Git Tools Updater","Attempts to update the local repo with the repo on github.")
-        addApp(home,"Git",currdir+"/pull/","Git Pull","Attempts to update the local repo with the repo on github.")
-        addApp(home,"Git",currdir+"/push/","Git Push","Attempts to update the github repo with the local repo on this device.")
-        addApp(home,"Git",currdir+"/status/","Git Status","Retrieves the status of the local repo on this device.")
-        addApp(home,"Git",currdir+"/commit/","Git Commit","Commits any current changes from a repository on this device.")
+        currdir = currdir + "/"
+        addApp(home,"Github","updater","Git Tools Updater","Attempts to update the local repo with the repo on github.")
+        addApp(home,"Git","pull","Git Pull","Attempts to update the local repo with the repo on github.")
+        addApp(home,"Git","push","Git Push","Attempts to update the github repo with the local repo on this device.")
+        addApp(home,"Git","status","Git Status","Retrieves the status of the local repo on this device.")
+        addApp(home,"Git","commit","Git Commit","Commits any current changes from a repository on this device.")
     except Exception as e:
         tk.messagebox.showerror("Failed",str(e))
     
