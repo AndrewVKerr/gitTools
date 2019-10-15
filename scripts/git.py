@@ -19,3 +19,4 @@ class Git:
         return subprocess.check_output("git add "+args+(" " if args != "" else "")+selector, shell=True)
     def status(self, selector=""):
         return subprocess.check_output("git status"+("" if selector == "" else " "+selector), shell=True)
+    def pull(self, 
