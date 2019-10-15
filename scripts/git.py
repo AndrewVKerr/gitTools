@@ -17,6 +17,19 @@ class Git:
         return os.getcwd()
     def add(self,args="",selector="."):
         return subprocess.check_output("git add "+args+(" " if args != "" else "")+selector, shell=True)
-    def status(self, selector=""):
+    
+    #git status [<options>...] [--] [<pathspec>...]
+    def status(self, options=None, pathspec=None):
         return subprocess.check_output("git status"+("" if selector == "" else " "+selector), shell=True)
-    def pull(self, 
+    
+    #git pull [<options>] [<repository> [<refspec>...]]
+    def pull(self, options=None, repository=None, refspec=None):
+        return subprocess.check_output("git pull"+
+                                       ("" if options == None else " "+options)+
+                                       ("" if repository == None else " "+repository +
+                                        ("" if refspec == None else " "+refspec)
+                                        )
+                                       );
+    
+g = Git();
+print(help(g.pull))
