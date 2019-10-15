@@ -11,20 +11,22 @@ from tkinter import simpledialog
 from tkinter import filedialog
 from tkinter import messagebox
 
-def status():
-    return subprocess.check_output("git status", shell=True)
+class Commit:
+    def status():
+        return subprocess.check_output("git status", shell=True)
 
-def add():
-    return subprocess.check_output("git add .", shell=True)
+    def add():
+        return subprocess.check_output("git add .", shell=True)
 
-def commit(message,changes):
-    if len(message) <= 0:
-        return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
-    else:
-        return subprocess.check_output("git commit -m \""+message+"\"", shell=True)
+    def commit(self,message,changes):
+        if len(message) <= 0:
+            return subprocess.check_output("git commit -m \""+changes+"\"", shell=True)
+        else:
+            return subprocess.check_output("git commit -m \""+message+"\"", shell=True)
 
-root = tk.Tk()
-root.withdraw()
+    def __init__(self):
+        root = tk.Tk()
+        root.withdraw()
 
 message = "Would you like to attempt to commit a repositorys changes?"
 
