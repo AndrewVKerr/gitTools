@@ -12,15 +12,27 @@ from tkinter import filedialog
 from tkinter import messagebox
 
 class Git:
+    
+    def __init__(self,graphical=False):
+        
+    
     def setDirectory(self, location):
         os.chdir(location)
         return os.getcwd()
-    def add(self,args="",selector="."):
-        return subprocess.check_output("git add "+args+(" " if args != "" else "")+selector, shell=True)
+    
+    #git add [<options>...] [--] [<pathspec>...]
+    def add(self,options=None,pathspec="."):
+        return subprocess.check_output("git add "+
+                                       ("" if options == None else " "+options)+
+                                       pathspec
+                                       , shell=True)
     
     #git status [<options>...] [--] [<pathspec>...]
     def status(self, options=None, pathspec=None):
-        return subprocess.check_output("git status"+("" if selector == "" else " "+selector), shell=True)
+        return subprocess.check_output("git status"+
+                                       ("" if options == None else " "+selector)+
+                                       ("" if pathspec == None else " "+pathspec)
+                                       , shell=True)
     
     #git pull [<options>] [<repository> [<refspec>...]]
     def pull(self, options=None, repository=None, refspec=None):
@@ -29,7 +41,11 @@ class Git:
                                        ("" if repository == None else " "+repository +
                                         ("" if refspec == None else " "+refspec)
                                         )
-                                       );
-    
-g = Git();
-print(help(g.pull))
+                                       , shell=True);
+
+if(__name__ == "__main__"):
+    g = Git();
+    try:
+        messagebox.showinfo("OK","OK")
+    except Exception as e:
+        messagebox.showerror("Failed to execute git command",e)
