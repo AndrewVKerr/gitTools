@@ -13,9 +13,6 @@ from tkinter import messagebox
 
 class Git:
     
-    def __init__(self,graphical=False):
-        
-    
     def setDirectory(self, location):
         os.chdir(location)
         return os.getcwd()
@@ -46,6 +43,8 @@ class Git:
 if(__name__ == "__main__"):
     g = Git();
     try:
-        messagebox.showinfo("OK","OK")
+        g.setDirectory("./..")
+        print(g.status().decode("utf-8"))
+        
     except Exception as e:
         messagebox.showerror("Failed to execute git command",e)
